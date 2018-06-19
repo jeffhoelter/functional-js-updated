@@ -1,16 +1,42 @@
-function increment(x) { return x + 1; }
-function decrement(x) { return x - 1; }
-function double(x) { return x * 2; }
-function half(x) { return x / 2; }
+function increment(x) {
+  console.log(`increment: ${x}`);
+  return x + 1;
+}
+function decrement(x) {
+  console.log(`decrement: ${x}`);
+  return x - 1;
+}
+function double(x) {
+  console.log(`double: ${x}`);
+  return x * 2;
+}
+function half(x) {
+  console.log(`half: ${x}`);
+  return x / 2;
+}
 
-function compose() {}
-function pipe() {}
+function compose(...functions) {
+  return function comp(...args) {
+    return functions.reduceRight(function(accumulator, currentValue) {
+      if (accumulator === null) {
+        return currentValue(...args);
+      }
+      return currentValue(accumulator);
+    }, null);
+  };
+}
 
-var f = compose(decrement,double,increment,half);
-var p = pipe(half,increment,double,decrement);
+function pipe(...functions) {
+  return compose(...functions.reverse());
+}
 
-f(3) === 4;
+var f = compose(decrement, double, increment, half);
+var p = pipe(half, increment, double, decrement);
+
+console.log(f(3));
+
+console.log(f(3) === 4);
 // true
 
-f(3) === p(3);
-// true
+console.log(f(3) === p(3));
+console.log(f(3) === p(3));
