@@ -4,13 +4,7 @@ function negate(fn) {
   };
 }
 
-function outputWrapper(fn) {
-  return function outputted(...args) {
-    return fn(...args);
-  };
-}
-
-var output = outputWrapper(console.log.bind(console));
+var output = console.log.bind(console);
 
 function printIf(fn) {
   return function(predicate) {
